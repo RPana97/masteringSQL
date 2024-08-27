@@ -112,3 +112,49 @@ WHERE BookID IN (
     GROUP BY BookID
     HAVING SUM(TotalPrice) < 50
 );
+
+--Retrieve books that are higher price than average of all books.
+SELECT *
+FROM Books
+WHERE Price > (SELECT AVG(Price) FROM Books);
+
+--Find BookID of books with highest totalprice in sales table
+SELECT BookID
+FROM Sales
+GROUP BY BookID
+ORDER BY SUM(TotalPrice) DESC
+LIMIT 1;
+
+--find the total number of books sold
+SELECT SUM(Quantity) AS TotalBooksSold
+FROM Sales;
+
+--calculate total revenue from books sales
+SELECT SUM(TotalPrice) AS TotalRevenue
+FROM Sales;
+
+--find average, min, and max book price
+SELECT AVG(Price) AS AveragePrice,
+       MIN(Price) AS MinimumPrice,
+       MAX(Price) AS MaximumPrice
+FROM Books;
+
+--group by Author and count number of books per author
+SELECT Author, COUNT(*) AS NumberOfBooks
+FROM Books
+GROUP BY Author;
+
+--Inner join to retrieve all records of books and their price
+SELECT Books.*, Sales.*
+FROM Books
+INNER JOIN Sales ON Books.BookID = Sales.BookID;
+
+--Left join retrieves all books and display sales records
+SELECT Books.*, Sales.*
+FROM Books
+LEFT JOIN Sales ON Books.BookID = Sales.BookID;
+
+--Right join retrieves all sales and displays book info
+SELECT Books.*, Sales.*
+FROM Sales
+LEFT JOIN Books ON Sales.BookID = Books.BookID;
